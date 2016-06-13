@@ -2,18 +2,18 @@
 import Foundation
 
 public class TextViewFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitTextView(self)
 	}
 	
 	public var placeholder: String = ""
-	public func placeholder(placeholder: String) -> Self {
+	public func placeholder(_ placeholder: String) -> Self {
 		self.placeholder = placeholder
 		return self
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
@@ -33,7 +33,7 @@ public class TextViewFormItem: FormItem {
 		}
 	}
 	
-	func assignValueAndSync(value: String) {
+	func assignValueAndSync(_ value: String) {
 		innerValue = value
 		syncCellWithValue(value: value)
 	}

@@ -7,7 +7,7 @@ import Foundation
 		print("[\(file):\(line)] \(function) - \(message)")
 	}
 #else
-	func SwiftyFormLog(message: String, function: String = #function, file: String = #file, line: Int = #line) {
+	func SwiftyFormLog(_ message: String, function: String = #function, file: String = #file, line: Int = #line) {
 		// do nothing
 	}
 #endif

@@ -19,7 +19,7 @@ public class EmailSpecification: CompositeSpecification {
 		super.init()
 	}
 
-	public override func isSatisfiedBy(candidate: Any?) -> Bool {
+	public override func isSatisfiedBy(_ candidate: Any?) -> Bool {
 		return specification.isSatisfiedBy(candidate)
 	}
 

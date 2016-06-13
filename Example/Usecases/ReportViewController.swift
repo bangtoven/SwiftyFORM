@@ -6,7 +6,7 @@ import SwiftyFORM
 class ReportViewController: FormViewController, MFMailComposeViewControllerDelegate {
 	let sendButton = ButtonFormItem()
 	
-	override func populate(builder: FormBuilder) {
+	override func populate(_ builder: FormBuilder) {
 		configureButton()
 		
 		builder.navigationTitle = "Report"
@@ -30,12 +30,12 @@ class ReportViewController: FormViewController, MFMailComposeViewControllerDeleg
 	}
 	
 	static func platformModelString() -> String? {
-		if let key = "hw.machine".cStringUsingEncoding(NSUTF8StringEncoding) {
+		if let key = "hw.machine".cString(using: String.Encoding.utf8) {
 			var size: Int = 0
 			sysctlbyname(key, nil, &size, nil, 0)
-			var machine = [CChar](count: Int(size), repeatedValue: 0)
+			var machine = [CChar](repeating: 0, count: Int(size))
 			sysctlbyname(key, &machine, &size, nil, 0)
-			return String.fromCString(machine)!
+			return String(cString: machine)
 		}
 		return nil
 	}
@@ -46,12 +46,12 @@ class ReportViewController: FormViewController, MFMailComposeViewControllerDeleg
 	}
 	
 	func systemVersion() -> StaticTextFormItem {
-		let string: String = UIDevice.currentDevice().systemVersion
+		let string: String = UIDevice.current().systemVersion
 		return StaticTextFormItem().title("iOS").value(string)
 	}
 	
 	func appName() -> StaticTextFormItem {
-		let mainBundle = NSBundle.mainBundle()
+		let mainBundle = Bundle.main()
 		let string0 = mainBundle.objectForInfoDictionaryKey("CFBundleDisplayName") as? String
 		let string1 = mainBundle.objectForInfoDictionaryKey(kCFBundleNameKey as String) as? String
 		let string = string0 ?? string1 ?? "Unknown"
@@ -59,14 +59,14 @@ class ReportViewController: FormViewController, MFMailComposeViewControllerDeleg
 	}
 	
 	func appVersion() -> StaticTextFormItem {
-		let mainBundle = NSBundle.mainBundle()
+		let mainBundle = Bundle.main()
 		let string0 = mainBundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
 		let string = string0 ?? "Unknown"
 		return StaticTextFormItem().title("Version").value(string)
 	}
 	
 	func appBuild() -> StaticTextFormItem {
-		let mainBundle = NSBundle.mainBundle()
+		let mainBundle = Bundle.main()
 		let string0 = mainBundle.objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String
 		let string = string0 ?? "Unknown"
 		return StaticTextFormItem().title("Build").value(string)
@@ -75,7 +75,7 @@ class ReportViewController: FormViewController, MFMailComposeViewControllerDeleg
 	func sendMail() {
 		if MFMailComposeViewController.canSendMail() {
 			let mc = configuredMailComposeViewController()
-			presentViewController(mc, animated: true, completion: nil)
+			present(mc, animated: true, completion: nil)
 		} else {
 			form_simpleAlert("Could Not Send Mail", "Your device could not send mail. Please check mail configuration and try again.")
 		}
@@ -94,21 +94,21 @@ class ReportViewController: FormViewController, MFMailComposeViewControllerDeleg
 		return mc
 	}
 	
-	func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-		dismissViewControllerAnimated(false) { [weak self] in
+	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: NSError?) {
+		dismiss(animated: false) { [weak self] in
 			self?.showMailResultAlert(result, error: error)
 		}
 	}
 	
-	func showMailResultAlert(result: MFMailComposeResult, error: NSError?) {
+	func showMailResultAlert(_ result: MFMailComposeResult, error: NSError?) {
 		switch result.rawValue {
-		case MFMailComposeResultCancelled.rawValue:
+		case MFMailComposeResult.cancelled.rawValue:
 			form_simpleAlert("Status", "Mail cancelled")
-		case MFMailComposeResultSaved.rawValue:
+		case MFMailComposeResult.saved.rawValue:
 			form_simpleAlert("Status", "Mail saved")
-		case MFMailComposeResultSent.rawValue:
+		case MFMailComposeResult.sent.rawValue:
 			form_simpleAlert("Status", "Mail sent")
-		case MFMailComposeResultFailed.rawValue:
+		case MFMailComposeResult.failed.rawValue:
 			form_simpleAlert("Mail failed", "error: \(error)")
 		default:
 			break

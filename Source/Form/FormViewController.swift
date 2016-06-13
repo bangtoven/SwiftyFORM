@@ -29,22 +29,22 @@ public class FormViewController: UIViewController {
 		self.tableView.delegate = dataSource
 	}
 
-	public func populate(builder: FormBuilder) {
+	public func populate(_ builder: FormBuilder) {
 		SwiftyFormLog("subclass must implement populate()")
 	}
 
-	override public func viewWillAppear(animated: Bool) {
+	override public func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		self.keyboardHandler?.addObservers()
 
 		// Fade out, so that the user can see what row has been updated
 		if let indexPath = tableView.indexPathForSelectedRow {
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
 	
-	override public func viewDidDisappear(animated: Bool) {
+	override public func viewDidDisappear(_ animated: Bool) {
 		self.keyboardHandler?.removeObservers()
 		super.viewDidDisappear(animated)
 	}

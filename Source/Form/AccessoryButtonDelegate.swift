@@ -2,5 +2,5 @@
 import UIKit
 
 @objc public protocol AccessoryButtonDelegate {
-	func form_accessoryButtonTapped(indexPath: NSIndexPath, tableView: UITableView)
+	func form_accessoryButtonTapped(_ indexPath: IndexPath, tableView: UITableView)
 }

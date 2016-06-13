@@ -2,12 +2,12 @@
 import Foundation
 
 public class StaticTextFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitStaticText(self)
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
@@ -28,7 +28,7 @@ public class StaticTextFormItem: FormItem {
 			syncCellWithValue(value: innerValue)
 		}
 	}
-	public func value(value: String) -> Self {
+	public func value(_ value: String) -> Self {
 		self.value = value
 		return self
 	}

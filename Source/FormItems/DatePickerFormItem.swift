@@ -2,37 +2,37 @@
 import Foundation
 
 public enum DatePickerFormItemMode {
-	case Time
-	case Date
-	case DateAndTime
+	case time
+	case date
+	case dateAndTime
 	
 	var description: String {
 		switch self {
-		case .Time: return "Time"
-		case .Date: return "Date"
-		case .DateAndTime: return "DateAndTime"
+		case .time: return "Time"
+		case .date: return "Date"
+		case .dateAndTime: return "DateAndTime"
 		}
 	}
 }
 
 public class DatePickerFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitDatePicker(self)
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 	
-	typealias SyncBlock = (date: NSDate?, animated: Bool) -> Void
-	var syncCellWithValue: SyncBlock = { (date: NSDate?, animated: Bool) in
+	typealias SyncBlock = (date: Date?, animated: Bool) -> Void
+	var syncCellWithValue: SyncBlock = { (date: Date?, animated: Bool) in
 		SwiftyFormLog("sync is not overridden")
 	}
 	
-	internal var innerValue: NSDate? = nil
-	public var value: NSDate? {
+	internal var innerValue: Date? = nil
+	public var value: Date? {
 		get {
 			return self.innerValue
 		}
@@ -41,13 +41,13 @@ public class DatePickerFormItem: FormItem {
 		}
 	}
 	
-	public func setValue(date: NSDate?, animated: Bool) {
+	public func setValue(_ date: Date?, animated: Bool) {
 		innerValue = date
 		syncCellWithValue(date: date, animated: animated)
 	}
 	
-	public var datePickerMode: DatePickerFormItemMode = .DateAndTime
-	public var locale: NSLocale? // default is [NSLocale currentLocale]. setting nil returns to default
-	public var minimumDate: NSDate? // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
-	public var maximumDate: NSDate? // default is nil
+	public var datePickerMode: DatePickerFormItemMode = .dateAndTime
+	public var locale: Locale? // default is [NSLocale currentLocale]. setting nil returns to default
+	public var minimumDate: Date? // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
+	public var maximumDate: Date? // default is nil
 }

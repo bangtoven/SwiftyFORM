@@ -3,33 +3,33 @@ import Foundation
 
 class ReloadPersistentValidationStateVisitor: FormItemVisitor {
 	
-	class func validateAndUpdateUI(items: [FormItem]) {
+	class func validateAndUpdateUI(_ items: [FormItem]) {
 		let visitor = ReloadPersistentValidationStateVisitor()
 		for item in items {
 			item.accept(visitor)
 		}
 	}
 	
-	func visitMeta(object: MetaFormItem) {}
-	func visitCustom(object: CustomFormItem) {}
-	func visitStaticText(object: StaticTextFormItem) {}
+	func visitMeta(_ object: MetaFormItem) {}
+	func visitCustom(_ object: CustomFormItem) {}
+	func visitStaticText(_ object: StaticTextFormItem) {}
 	
-	func visitTextField(object: TextFieldFormItem) {
+	func visitTextField(_ object: TextFieldFormItem) {
 		object.reloadPersistentValidationState()
 	}
 	
-	func visitTextView(object: TextViewFormItem) {}
-	func visitViewController(object: ViewControllerFormItem) {}
-	func visitOptionPicker(object: OptionPickerFormItem) {}
-	func visitDatePicker(object: DatePickerFormItem) {}
-	func visitButton(object: ButtonFormItem) {}
-	func visitOptionRow(object: OptionRowFormItem) {}
-	func visitSwitch(object: SwitchFormItem) {}
-	func visitStepper(object: StepperFormItem) {}
-	func visitSlider(object: SliderFormItem) {}
-	func visitSection(object: SectionFormItem) {}
-	func visitSectionHeaderTitle(object: SectionHeaderTitleFormItem) {}
-	func visitSectionHeaderView(object: SectionHeaderViewFormItem) {}
-	func visitSectionFooterTitle(object: SectionFooterTitleFormItem) {}
-	func visitSectionFooterView(object: SectionFooterViewFormItem) {}
+	func visitTextView(_ object: TextViewFormItem) {}
+	func visitViewController(_ object: ViewControllerFormItem) {}
+	func visitOptionPicker(_ object: OptionPickerFormItem) {}
+	func visitDatePicker(_ object: DatePickerFormItem) {}
+	func visitButton(_ object: ButtonFormItem) {}
+	func visitOptionRow(_ object: OptionRowFormItem) {}
+	func visitSwitch(_ object: SwitchFormItem) {}
+	func visitStepper(_ object: StepperFormItem) {}
+	func visitSlider(_ object: SliderFormItem) {}
+	func visitSection(_ object: SectionFormItem) {}
+	func visitSectionHeaderTitle(_ object: SectionHeaderTitleFormItem) {}
+	func visitSectionHeaderView(_ object: SectionHeaderViewFormItem) {}
+	func visitSectionFooterTitle(_ object: SectionFooterTitleFormItem) {}
+	func visitSectionFooterView(_ object: SectionFooterViewFormItem) {}
 }

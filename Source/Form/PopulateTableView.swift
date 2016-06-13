@@ -2,7 +2,7 @@
 import UIKit
 
 protocol WillPopCommandProtocol {
-	func execute(context: ViewControllerFormItemPopContext)
+	func execute(_ context: ViewControllerFormItemPopContext)
 }
 
 
@@ -12,7 +12,7 @@ class WillPopCustomViewController: WillPopCommandProtocol {
 		self.object = object
 	}
 	
-	func execute(context: ViewControllerFormItemPopContext) {
+	func execute(_ context: ViewControllerFormItemPopContext) {
 		if let vc = object as? ViewControllerFormItem {
 			vc.willPopViewController?(context)
 			return
@@ -26,7 +26,7 @@ class WillPopOptionViewController: WillPopCommandProtocol {
 		self.object = object
 	}
 	
-	func execute(context: ViewControllerFormItemPopContext) {
+	func execute(_ context: ViewControllerFormItemPopContext) {
 		object.willPopViewController?(context)
 	}
 }
@@ -50,9 +50,9 @@ class PopulateTableView: FormItemVisitor {
 		self.model = model
 	}
 	
-	func closeSection(footerBlock: TableViewSectionPart.CreateBlock) {
-		var headerBlock: Void -> TableViewSectionPart = {
-			return TableViewSectionPart.None
+	func closeSection(_ footerBlock: TableViewSectionPart.CreateBlock) {
+		var headerBlock: (Void) -> TableViewSectionPart = {
+			return TableViewSectionPart.none
 		}
 		if let block = self.headerBlock {
 			headerBlock = block
@@ -66,11 +66,11 @@ class PopulateTableView: FormItemVisitor {
 	}
 	
 	
-	func visitMeta(object: MetaFormItem) {
+	func visitMeta(_ object: MetaFormItem) {
 		// this item is not visual
 	}
 
-	func visitCustom(object: CustomFormItem) {
+	func visitCustom(_ object: CustomFormItem) {
 		do {
 			let cell = try object.createCell()
 			cells.append(cell)
@@ -85,7 +85,7 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 	
-	func visitStaticText(object: StaticTextFormItem) {
+	func visitStaticText(_ object: StaticTextFormItem) {
 		var model = StaticTextCellModel()
 		model.title = object.title
 		model.value = object.value
@@ -105,7 +105,7 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 	
-	func visitTextField(object: TextFieldFormItem) {
+	func visitTextField(_ object: TextFieldFormItem) {
 		var model = TextFieldFormItemCellModel()
 		model.toolbarMode = self.model.toolbarMode
 		model.title = object.title
@@ -149,13 +149,13 @@ class PopulateTableView: FormItemVisitor {
 
 		object.assignTitleWidth = { (width: CGFloat) in
 			if let cell = weakCell {
-				cell.titleWidthMode = TextFieldFormItemCell.TitleWidthMode.Assign(width: width)
+				cell.titleWidthMode = TextFieldFormItemCell.TitleWidthMode.assign(width: width)
 				cell.setNeedsUpdateConstraints()
 			}
 		}
 	}
 	
-	func visitTextView(object: TextViewFormItem) {
+	func visitTextView(_ object: TextViewFormItem) {
 		var model = TextViewCellModel()
 		model.toolbarMode = self.model.toolbarMode
 		model.title = object.title
@@ -178,7 +178,7 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 
-	func visitViewController(object: ViewControllerFormItem) {
+	func visitViewController(_ object: ViewControllerFormItem) {
 		let model = ViewControllerFormItemCellModel(title: object.title, placeholder: object.placeholder)
 		let willPopViewController = WillPopCustomViewController(object: object)
 		
@@ -195,20 +195,20 @@ class PopulateTableView: FormItemVisitor {
 		cells.append(cell)
 	}
 	
-	class func prepareDismissCommand(willPopCommand: WillPopCommandProtocol, parentViewController: UIViewController, cell: ViewControllerFormItemCell) -> CommandProtocol {
+	class func prepareDismissCommand(_ willPopCommand: WillPopCommandProtocol, parentViewController: UIViewController, cell: ViewControllerFormItemCell) -> CommandProtocol {
 		weak var weakViewController = parentViewController
 		let command = CommandBlock { (childViewController: UIViewController, returnObject: AnyObject?) in
 			SwiftyFormLog("pop: \(returnObject)")
 			if let vc = weakViewController {
 				let context = ViewControllerFormItemPopContext(parentViewController: vc, childViewController: childViewController, cell: cell, returnedObject: returnObject)
 				willPopCommand.execute(context)
-				vc.navigationController?.popViewControllerAnimated(true)
+				vc.navigationController?.popViewController(animated: true)
 			}
 		}
 		return command
 	}
 
-	func visitOptionPicker(object: OptionPickerFormItem) {
+	func visitOptionPicker(_ object: OptionPickerFormItem) {
 		var model = OptionViewControllerCellModel()
 		model.title = object.title
 		model.placeholder = object.placeholder
@@ -235,15 +235,15 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 	
-	func mapDatePickerMode(mode: DatePickerFormItemMode) -> UIDatePickerMode {
+	func mapDatePickerMode(_ mode: DatePickerFormItemMode) -> UIDatePickerMode {
 		switch mode {
-		case .Date: return UIDatePickerMode.Date
-		case .Time: return UIDatePickerMode.Time
-		case .DateAndTime: return UIDatePickerMode.DateAndTime
+		case .date: return UIDatePickerMode.date
+		case .time: return UIDatePickerMode.time
+		case .dateAndTime: return UIDatePickerMode.dateAndTime
 		}
 	}
 	
-	func visitDatePicker(object: DatePickerFormItem) {
+	func visitDatePicker(_ object: DatePickerFormItem) {
 		var model = DatePickerCellModel()
 		model.title = object.title
 		model.toolbarMode = self.model.toolbarMode
@@ -253,7 +253,7 @@ class PopulateTableView: FormItemVisitor {
 		model.maximumDate = object.maximumDate
 		
 		weak var weakObject = object
-		model.valueDidChange = { (date: NSDate) in
+		model.valueDidChange = { (date: Date) in
 			SwiftyFormLog("value did change \(date)")
 			weakObject?.innerValue = date
 			return
@@ -267,14 +267,14 @@ class PopulateTableView: FormItemVisitor {
 		cells.append(cell)
 		
 		weak var weakCell = cell
-		object.syncCellWithValue = { (date: NSDate?, animated: Bool) in
+		object.syncCellWithValue = { (date: Date?, animated: Bool) in
 			SwiftyFormLog("sync date \(date)")
 			weakCell?.setDateWithoutSync(date, animated: animated)
 			return
 		}
 	}
 	
-	func visitButton(object: ButtonFormItem) {
+	func visitButton(_ object: ButtonFormItem) {
 		var model = ButtonCellModel()
 		model.title = object.title
 		model.action = object.action
@@ -282,7 +282,7 @@ class PopulateTableView: FormItemVisitor {
 		cells.append(cell)
 	}
 
-	func visitOptionRow(object: OptionRowFormItem) {
+	func visitOptionRow(_ object: OptionRowFormItem) {
 		weak var weakViewController = self.model.viewController
 		let cell = OptionCell(model: object) {
 			SwiftyFormLog("did select option")
@@ -295,7 +295,7 @@ class PopulateTableView: FormItemVisitor {
 		cells.append(cell)
 	}
 	
-	func visitSwitch(object: SwitchFormItem) {
+	func visitSwitch(_ object: SwitchFormItem) {
 		var model = SwitchCellModel()
 		model.title = object.title
 		
@@ -321,7 +321,7 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 	
-	func visitStepper(object: StepperFormItem) {
+	func visitStepper(_ object: StepperFormItem) {
 		var model = StepperCellModel()
 		model.title = object.title
 		model.value = object.value
@@ -348,7 +348,7 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 
-	func visitSlider(object: SliderFormItem) {
+	func visitSlider(_ object: SliderFormItem) {
 		var model = SliderCellModel()
 		model.minimumValue = object.minimumValue
 		model.maximumValue = object.maximumValue
@@ -373,65 +373,65 @@ class PopulateTableView: FormItemVisitor {
 		}
 	}
 	
-	func visitSection(object: SectionFormItem) {
+	func visitSection(_ object: SectionFormItem) {
 		let footerBlock: TableViewSectionPart.CreateBlock = {
-			return TableViewSectionPart.None
+			return TableViewSectionPart.none
 		}
 		closeSection(footerBlock)
 	}
 
-	func visitSectionHeaderTitle(object: SectionHeaderTitleFormItem) {
+	func visitSectionHeaderTitle(_ object: SectionHeaderTitleFormItem) {
 		if cells.count > 0 || self.headerBlock != nil {
 			let footerBlock: TableViewSectionPart.CreateBlock = {
-				return TableViewSectionPart.None
+				return TableViewSectionPart.none
 			}
 			closeSection(footerBlock)
 		}
 
 		self.headerBlock = {
-			var item = TableViewSectionPart.None
+			var item = TableViewSectionPart.none
 			if let title = object.title {
-				item = TableViewSectionPart.TitleString(string: title)
+				item = TableViewSectionPart.titleString(string: title)
 			}
 			return item
 		}
 	}
 	
-	func visitSectionHeaderView(object: SectionHeaderViewFormItem) {
+	func visitSectionHeaderView(_ object: SectionHeaderViewFormItem) {
 		if cells.count > 0 || self.headerBlock != nil {
 			let footerBlock: TableViewSectionPart.CreateBlock = {
-				return TableViewSectionPart.None
+				return TableViewSectionPart.none
 			}
 			closeSection(footerBlock)
 		}
 
 		self.headerBlock = {
 			let view: UIView? = object.viewBlock?()
-			var item = TableViewSectionPart.None
+			var item = TableViewSectionPart.none
 			if let view = view {
-				item = TableViewSectionPart.TitleView(view: view)
+				item = TableViewSectionPart.titleView(view: view)
 			}
 			return item
 		}
 	}
 
-	func visitSectionFooterTitle(object: SectionFooterTitleFormItem) {
+	func visitSectionFooterTitle(_ object: SectionFooterTitleFormItem) {
 		let footerBlock: TableViewSectionPart.CreateBlock = {
-			var footer = TableViewSectionPart.None
+			var footer = TableViewSectionPart.none
 			if let title = object.title {
-				footer = TableViewSectionPart.TitleString(string: title)
+				footer = TableViewSectionPart.titleString(string: title)
 			}
 			return footer
 		}
 		closeSection(footerBlock)
 	}
 	
-	func visitSectionFooterView(object: SectionFooterViewFormItem) {
+	func visitSectionFooterView(_ object: SectionFooterViewFormItem) {
 		let footerBlock: TableViewSectionPart.CreateBlock = {
 			let view: UIView? = object.viewBlock?()
-			var item = TableViewSectionPart.None
+			var item = TableViewSectionPart.none
 			if let view = view {
-				item = TableViewSectionPart.TitleView(view: view)
+				item = TableViewSectionPart.titleView(view: view)
 			}
 			return item
 		}

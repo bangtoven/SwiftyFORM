@@ -16,29 +16,29 @@ public class OptionRowModel: CustomStringConvertible {
 }
 
 public class OptionPickerFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitOptionPicker(self)
 	}
 	
 	public var placeholder: String = ""
-	public func placeholder(placeholder: String) -> Self {
+	public func placeholder(_ placeholder: String) -> Self {
 		self.placeholder = placeholder
 		return self
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 	
 	public var options = [OptionRowModel]()
-	public func append(name: String, identifier: String? = nil) -> Self {
+	public func append(_ name: String, identifier: String? = nil) -> Self {
 		options.append(OptionRowModel(name, identifier ?? name))
 		return self
 	}
 	
-	public func selectOptionWithTitle(title: String) {
+	public func selectOptionWithTitle(_ title: String) {
 		for option in options {
 			if option.title == title {
 				self.setSelectedOptionRow(option)
@@ -47,7 +47,7 @@ public class OptionPickerFormItem: FormItem {
 		}
 	}
 	
-	public func selectOptionWithIdentifier(identifier: String) {
+	public func selectOptionWithIdentifier(_ identifier: String) {
 		for option in options {
 			if option.identifier == identifier {
 				self.setSelectedOptionRow(option)
@@ -71,7 +71,7 @@ public class OptionPickerFormItem: FormItem {
 		}
 	}
 	
-	public func setSelectedOptionRow(selected: OptionRowModel?) {
+	public func setSelectedOptionRow(_ selected: OptionRowModel?) {
 		SwiftyFormLog("option: \(selected?.title)")
 		innerSelected = selected
 		syncCellWithValue(selected: selected)
@@ -84,12 +84,12 @@ public class OptionPickerFormItem: FormItem {
 }
 
 public class OptionRowFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitOptionRow(self)
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}

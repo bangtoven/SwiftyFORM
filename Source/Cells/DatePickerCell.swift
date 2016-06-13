@@ -3,13 +3,13 @@ import UIKit
 
 public struct DatePickerCellModel {
 	var title: String = ""
-	var toolbarMode: ToolbarMode = .Simple
-	var datePickerMode: UIDatePickerMode = .DateAndTime
-	var locale: NSLocale? = nil // default is [NSLocale currentLocale]. setting nil returns to default
-	var minimumDate: NSDate? = nil // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
-	var maximumDate: NSDate? = nil // default is nil
+	var toolbarMode: ToolbarMode = .simple
+	var datePickerMode: UIDatePickerMode = .dateAndTime
+	var locale: Locale? = nil // default is [NSLocale currentLocale]. setting nil returns to default
+	var minimumDate: Date? = nil // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
+	var maximumDate: Date? = nil // default is nil
 	
-	var valueDidChange: NSDate -> Void = { (date: NSDate) in
+	var valueDidChange: (Date) -> Void = { (date: Date) in
 		SwiftyFormLog("date \(date)")
 	}
 }
@@ -29,11 +29,11 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		
 		Possible work around: Continuously poll for changes.
 		*/
-		assert(model.datePickerMode != .CountDownTimer, "CountDownTimer is not supported")
+		assert(model.datePickerMode != .countDownTimer, "CountDownTimer is not supported")
 
 		self.model = model
-		super.init(style: .Value1, reuseIdentifier: nil)
-		selectionStyle = .Default
+		super.init(style: .value1, reuseIdentifier: nil)
+		selectionStyle = .default
 		textLabel?.text = model.title
 		
 		updateValue()
@@ -46,8 +46,8 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 	}
 	
 	public func assignDefaultColors() {
-		textLabel?.textColor = UIColor.blackColor()
-		detailTextLabel?.textColor = UIColor.grayColor()
+		textLabel?.textColor = UIColor.black()
+		detailTextLabel?.textColor = UIColor.gray()
 	}
 	
 	public func assignTintColors() {
@@ -57,8 +57,8 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		detailTextLabel?.textColor = color
 	}
 	
-	public func resolveLocale() -> NSLocale {
-		return model.locale ?? NSLocale.currentLocale()
+	public func resolveLocale() -> Locale {
+		return model.locale ?? Locale.current()
 	}
 	
 	public lazy var datePicker: UIDatePicker = {
@@ -66,7 +66,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		instance.datePickerMode = self.model.datePickerMode
 		instance.minimumDate = self.model.minimumDate
 		instance.maximumDate = self.model.maximumDate
-		instance.addTarget(self, action: #selector(DatePickerCell.valueChanged), forControlEvents: .ValueChanged)
+		instance.addTarget(self, action: #selector(DatePickerCell.valueChanged), for: .valueChanged)
 		instance.locale = self.resolveLocale()
 		return instance
 		}()
@@ -94,7 +94,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		}()
 	
 	public func updateToolbarButtons() {
-		if model.toolbarMode == .Simple {
+		if model.toolbarMode == .simple {
 			toolbar.updateButtonConfiguration(self)
 		}
 	}
@@ -119,7 +119,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 	}
 	
 	public override var inputAccessoryView: UIView? {
-		if model.toolbarMode == .Simple {
+		if model.toolbarMode == .simple {
 			return toolbar
 		}
 		return nil
@@ -132,51 +132,51 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		updateValue()
 	}
 	
-	public func obtainDateStyle(datePickerMode: UIDatePickerMode) -> NSDateFormatterStyle {
+	public func obtainDateStyle(_ datePickerMode: UIDatePickerMode) -> DateFormatter.Style {
 		switch datePickerMode {
-		case .Time:
-			return .NoStyle
-		case .Date:
-			return .LongStyle
-		case .DateAndTime:
-			return .ShortStyle
-		case .CountDownTimer:
-			return .NoStyle
+		case .time:
+			return .noStyle
+		case .date:
+			return .longStyle
+		case .dateAndTime:
+			return .shortStyle
+		case .countDownTimer:
+			return .noStyle
 		}
 	}
 	
-	public func obtainTimeStyle(datePickerMode: UIDatePickerMode) -> NSDateFormatterStyle {
+	public func obtainTimeStyle(_ datePickerMode: UIDatePickerMode) -> DateFormatter.Style {
 		switch datePickerMode {
-		case .Time:
-			return .ShortStyle
-		case .Date:
-			return .NoStyle
-		case .DateAndTime:
-			return .ShortStyle
-		case .CountDownTimer:
-			return .ShortStyle
+		case .time:
+			return .shortStyle
+		case .date:
+			return .noStyle
+		case .dateAndTime:
+			return .shortStyle
+		case .countDownTimer:
+			return .shortStyle
 		}
 	}
 	
 	public func humanReadableValue() -> String {
-		if model.datePickerMode == .CountDownTimer {
+		if model.datePickerMode == .countDownTimer {
 			let t = datePicker.countDownDuration
-			let date = NSDate(timeIntervalSinceReferenceDate: t)
-			let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-			calendar.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-			let components = calendar.components([NSCalendarUnit.Hour, NSCalendarUnit.Minute], fromDate: date)
+			let date = Date(timeIntervalSinceReferenceDate: t)
+			let calendar = Calendar(identifier: Calendar.Identifier.gregorian)!
+			calendar.timeZone = TimeZone(forSecondsFromGMT: 0)
+			let components = calendar.components([Calendar.Unit.hour, Calendar.Unit.minute], from: date)
 			let hour = components.hour
 			let minute = components.minute
-			return String(format: "%02d:%02d", hour, minute)
+			return String(format: "%02d:%02d", hour!, minute!)
 		}
 		if true {
 			let date = datePicker.date
 			//SwiftyFormLog("date: \(date)")
-			let dateFormatter = NSDateFormatter()
+			let dateFormatter = DateFormatter()
 			dateFormatter.locale = self.resolveLocale()
 			dateFormatter.dateStyle = obtainDateStyle(model.datePickerMode)
 			dateFormatter.timeStyle = obtainTimeStyle(model.datePickerMode)
-			return dateFormatter.stringFromDate(date)
+			return dateFormatter.string(from: date)
 		}
 	}
 
@@ -184,20 +184,20 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		detailTextLabel?.text = humanReadableValue()
 	}
 	
-	public func setDateWithoutSync(date: NSDate?, animated: Bool) {
+	public func setDateWithoutSync(_ date: Date?, animated: Bool) {
 		SwiftyFormLog("set date \(date), animated \(animated)")
-		datePicker.setDate(date ?? NSDate(), animated: animated)
+		datePicker.setDate(date ?? Date(), animated: animated)
 		updateValue()
 	}
 
-	public func form_didSelectRow(indexPath: NSIndexPath, tableView: UITableView) {
+	public func form_didSelectRow(_ indexPath: IndexPath, tableView: UITableView) {
 		// Hide the datepicker wheel, if it's already visible
 		// Otherwise show the datepicker
 		
 		let alreadyFirstResponder = (self.form_firstResponder() != nil)
 		if alreadyFirstResponder {
 			tableView.form_firstResponder()?.resignFirstResponder()
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+			tableView.deselectRow(at: indexPath, animated: true)
 			return
 		}
 		
@@ -205,7 +205,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		// hide keyboard when the user taps this kind of row
 		tableView.form_firstResponder()?.resignFirstResponder()
 		self.becomeFirstResponder()
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 		//SwiftyFormLog("did invoke")
 	}
 	

@@ -4,7 +4,7 @@ import SwiftyFORM
 
 class WorkInProgressViewController: FormViewController {
 	
-	override func populate(builder: FormBuilder) {
+	override func populate(_ builder: FormBuilder) {
 		builder.navigationTitle = "Work In Progress"
 		builder += stepperForm0
 		builder += button0

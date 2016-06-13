@@ -3,7 +3,7 @@ import UIKit
 import SwiftyFORM
 
 public class FirstViewController: FormViewController {
-	override public func populate(builder: FormBuilder) {
+	override public func populate(_ builder: FormBuilder) {
 		builder.demo_showInfo("Welcome to SwiftyFORM\na new form framework\nfor iOS 9")
 
 		builder += SectionHeaderTitleFormItem().title("Usecases")

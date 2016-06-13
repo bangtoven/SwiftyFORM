@@ -2,7 +2,7 @@
 import Foundation
 
 public class SectionFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSection(self)
 	}
 }
@@ -13,23 +13,23 @@ public class SectionHeaderTitleFormItem: FormItem {
 		super.init()
 	}
 	
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSectionHeaderTitle(self)
 	}
 	
 	public var title: String?
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 }
 
 public class SectionHeaderViewFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSectionHeaderView(self)
 	}
 	
-	public typealias CreateUIView = Void -> UIView?
+	public typealias CreateUIView = (Void) -> UIView?
 	public var viewBlock: CreateUIView?
 }
 
@@ -39,22 +39,22 @@ public class SectionFooterTitleFormItem: FormItem {
 		super.init()
 	}
 	
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSectionFooterTitle(self)
 	}
 	
 	public var title: String?
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 }
 
 public class SectionFooterViewFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSectionFooterView(self)
 	}
 	
-	public typealias CreateUIView = Void -> UIView?
+	public typealias CreateUIView = (Void) -> UIView?
 	public var viewBlock: CreateUIView?
 }

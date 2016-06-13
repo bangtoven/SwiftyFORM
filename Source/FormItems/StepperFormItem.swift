@@ -2,12 +2,12 @@
 import Foundation
 
 public class StepperFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitStepper(self)
 	}
 
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
@@ -27,7 +27,7 @@ public class StepperFormItem: FormItem {
 		}
 	}
 
-	public func setValue(value: Int, animated: Bool) {
+	public func setValue(_ value: Int, animated: Bool) {
 		innerValue = value
 		syncCellWithValue(value: value, animated: animated)
 	}

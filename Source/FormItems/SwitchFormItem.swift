@@ -2,12 +2,12 @@
 import Foundation
 
 public class SwitchFormItem: FormItem {
-	override func accept(visitor: FormItemVisitor) {
+	override func accept(_ visitor: FormItemVisitor) {
 		visitor.visitSwitch(self)
 	}
 	
 	public var title: String = ""
-	public func title(title: String) -> Self {
+	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
@@ -32,12 +32,12 @@ public class SwitchFormItem: FormItem {
 		SwiftyFormLog("not overridden")
 	}
 	
-	public func switchDidChange(value: Bool) {
+	public func switchDidChange(_ value: Bool) {
 		innerValue = value
 		switchDidChangeBlock(value: value)
 	}
 	
-	public func setValue(value: Bool, animated: Bool) {
+	public func setValue(_ value: Bool, animated: Bool) {
 		innerValue = value
 		syncCellWithValue(value: value, animated: animated)
 	}

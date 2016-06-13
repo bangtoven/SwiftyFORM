@@ -4,7 +4,7 @@ import UIKit
 public class FormTableView: UITableView {
 
 	public init() {
-		super.init(frame: CGRectZero, style: .Grouped)
+		super.init(frame: CGRect.zero, style: .grouped)
 		contentInset = UIEdgeInsetsZero
 		scrollIndicatorInsets = UIEdgeInsetsZero
 		estimatedRowHeight = 44.0

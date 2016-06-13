@@ -4,7 +4,7 @@ import SwiftyFORM
 
 class TextViewValidationViewController: FormViewController {
 
-	override func populate(builder: FormBuilder) {
+	override func populate(_ builder: FormBuilder) {
 		builder.navigationTitle = "Validation"
 		builder += longSummary
 		builder += notes
@@ -58,7 +58,7 @@ class TextViewValidationViewController: FormViewController {
 		return instance
 		}()
 	
-	func pickRandom(strings: [String]) -> String {
+	func pickRandom(_ strings: [String]) -> String {
 		if strings.count == 0 {
 			return ""
 		}
@@ -66,7 +66,7 @@ class TextViewValidationViewController: FormViewController {
 		return strings[i]
 	}
 	
-	func appendRandom(textView: TextViewFormItem, strings: [String]) {
+	func appendRandom(_ textView: TextViewFormItem, strings: [String]) {
 		let notEmpty = textView.value.characters.count != 0
 		var s = ""
 		if notEmpty {
