@@ -21,11 +21,13 @@ public class CountSpecification: CompositeSpecification {
 	public var minCount: Int?
 	public var maxCount: Int?
 	
+	@discardableResult
 	public func min(_ count: Int) -> CountSpecification {
 		minCount = count
 		return self
 	}
 	
+	@discardableResult
 	public func max(_ count: Int) -> CountSpecification {
 		maxCount = count
 		return self
