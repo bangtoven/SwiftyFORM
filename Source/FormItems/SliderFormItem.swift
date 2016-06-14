@@ -7,12 +7,16 @@ public class SliderFormItem: FormItem {
 	}
 	
 	public var minimumValue: Float = 0.0
+
+	@discardableResult
 	public func minimumValue(_ minimumValue: Float) -> Self {
 		self.minimumValue = minimumValue
 		return self
 	}
 	
 	public var maximumValue: Float = 1.0
+
+	@discardableResult
 	public func maximumValue(_ maximumValue: Float) -> Self {
 		self.maximumValue = maximumValue
 		return self

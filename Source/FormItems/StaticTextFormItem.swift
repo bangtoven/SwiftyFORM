@@ -7,6 +7,8 @@ public class StaticTextFormItem: FormItem {
 	}
 	
 	public var title: String = ""
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
@@ -28,6 +30,7 @@ public class StaticTextFormItem: FormItem {
 			syncCellWithValue(value: innerValue)
 		}
 	}
+	@discardableResult
 	public func value(_ value: String) -> Self {
 		self.value = value
 		return self

@@ -18,6 +18,8 @@ public class SectionHeaderTitleFormItem: FormItem {
 	}
 	
 	public var title: String?
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
@@ -44,6 +46,8 @@ public class SectionFooterTitleFormItem: FormItem {
 	}
 	
 	public var title: String?
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self

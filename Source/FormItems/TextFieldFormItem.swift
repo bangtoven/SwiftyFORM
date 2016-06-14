@@ -7,6 +7,8 @@ public class TextFieldFormItem: FormItem {
 	}
 	
 	public var keyboardType: UIKeyboardType = .default
+
+	@discardableResult
 	public func keyboardType(_ keyboardType: UIKeyboardType) -> Self {
 		self.keyboardType = keyboardType
 		return self
@@ -19,6 +21,8 @@ public class TextFieldFormItem: FormItem {
 	public var secureTextEntry = false
 	
 	public var returnKeyType: UIReturnKeyType = .default
+
+	@discardableResult
 	public func returnKeyType(_ returnKeyType: UIReturnKeyType) -> Self {
 		self.returnKeyType = returnKeyType
 		return self
@@ -111,7 +115,7 @@ public class TextFieldFormItem: FormItem {
 	
 	@discardableResult
 	public func required(_ message: String) -> Self {
-		submitValidate(CountSpecification.min(1), message: message)
+		_ = submitValidate(CountSpecification.min(1), message: message)
 		return self
 	}
 	

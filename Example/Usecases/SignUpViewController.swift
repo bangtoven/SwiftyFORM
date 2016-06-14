@@ -107,7 +107,8 @@ class SignUpViewController: FormViewController {
 		dict["key0"] = "I'm hidden text"
 		dict["key1"] = "I'm included when exporting to JSON"
 		dict["key2"] = "Can be used to pass extra info along with the JSON"
-		instance.value(dict).elementIdentifier("metaData")
+		_ = instance.elementIdentifier("metaData")
+		instance.value(dict)
 		return instance
 		}()
 	
