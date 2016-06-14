@@ -191,7 +191,7 @@ public class TableViewSectionArray : NSObject, UITableViewDataSource, UITableVie
 	}
 	
 	/// hide keyboard when the user taps the status bar
-	public func scrollViewShouldScroll(toTop scrollView: UIScrollView) -> Bool {
+	public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
 		scrollView.form_firstResponder()?.resignFirstResponder()
 		return true
 	}

@@ -151,7 +151,7 @@ public class TextFieldFormItemCell: UITableViewCell, UITextFieldDelegate, CellHe
 
 	public func dismissKeyboard() {
 		SwiftyFormLog("dismiss keyboard")
-		resignFirstResponder()
+		_ = resignFirstResponder()
 	}
 	
 	public func handleTap(_ sender: UITapGestureRecognizer) {
@@ -287,6 +287,7 @@ public class TextFieldFormItemCell: UITableViewCell, UITextFieldDelegate, CellHe
 	
 	// Returns true  when valid
 	// Returns false when invalid
+	@discardableResult
 	public func validateAndUpdateErrorIfNeeded(_ text: String, shouldInstallTimer: Bool, checkSubmitRule: Bool) -> Bool {
 		
 		let tableView: UITableView? = form_tableView()

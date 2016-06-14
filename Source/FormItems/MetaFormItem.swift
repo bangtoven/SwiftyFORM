@@ -8,6 +8,8 @@ public class MetaFormItem: FormItem {
 	}
 	
 	public var value: AnyObject?
+
+	@discardableResult
 	public func value(_ value: AnyObject?) -> Self {
 		self.value = value
 		return self

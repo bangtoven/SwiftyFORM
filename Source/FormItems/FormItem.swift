@@ -32,6 +32,8 @@ public class FormItem: NSObject {
 	
 	// For serialization to json purposes, eg. "firstName"
 	public var elementIdentifier: String?
+
+	@discardableResult
 	public func elementIdentifier(_ elementIdentifier: String?) -> Self {
 		self.elementIdentifier = elementIdentifier
 		return self
@@ -39,6 +41,8 @@ public class FormItem: NSObject {
 	
 	// For styling purposes, eg. "bottomRowInFirstSection"
 	public var styleIdentifier: String?
+
+	@discardableResult
 	public func styleIdentifier(_ styleIdentifier: String?) -> Self {
 		self.styleIdentifier = styleIdentifier
 		return self
@@ -46,6 +50,8 @@ public class FormItem: NSObject {
 
 	// For styling purposes, eg. "leftAlignedGroup0"
 	public var styleClass: String?
+
+	@discardableResult
 	public func styleClass(_ styleClass: String?) -> Self {
 		self.styleClass = styleClass
 		return self

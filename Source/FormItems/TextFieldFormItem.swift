@@ -68,17 +68,22 @@ public class TextFieldFormItem: FormItem {
 	
 	
 	public var placeholder: String = ""
+
+	@discardableResult
 	public func placeholder(_ placeholder: String) -> Self {
 		self.placeholder = placeholder
 		return self
 	}
 	
 	public var title: String = ""
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 	
+	@discardableResult
 	public func password() -> Self {
 		self.secureTextEntry = true
 		return self
@@ -86,21 +91,25 @@ public class TextFieldFormItem: FormItem {
 	
 	public let validatorBuilder = ValidatorBuilder()
 	
+	@discardableResult
 	public func validate(_ specification: Specification, message: String) -> Self {
 		validatorBuilder.hardValidate(specification, message: message)
 		return self
 	}
 	
+	@discardableResult
 	public func softValidate(_ specification: Specification, message: String) -> Self {
 		validatorBuilder.softValidate(specification, message: message)
 		return self
 	}
 	
+	@discardableResult
 	public func submitValidate(_ specification: Specification, message: String) -> Self {
 		validatorBuilder.submitValidate(specification, message: message)
 		return self
 	}
 	
+	@discardableResult
 	public func required(_ message: String) -> Self {
 		submitValidate(CountSpecification.min(1), message: message)
 		return self

@@ -111,7 +111,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 	
 	public func dismissKeyboard() {
 		SwiftyFormLog("dismiss keyboard")
-		resignFirstResponder()
+		_ = resignFirstResponder()
 	}
 	
 	public override var inputView: UIView? {
@@ -204,7 +204,7 @@ public class DatePickerCell: UITableViewCell, SelectRowDelegate {
 		//SwiftyFormLog("will invoke")
 		// hide keyboard when the user taps this kind of row
 		tableView.form_firstResponder()?.resignFirstResponder()
-		self.becomeFirstResponder()
+		_ = self.becomeFirstResponder()
 		tableView.deselectRow(at: indexPath, animated: true)
 		//SwiftyFormLog("did invoke")
 	}

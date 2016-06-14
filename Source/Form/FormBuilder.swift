@@ -30,6 +30,7 @@ public class FormBuilder: NSObject {
 		innerItems.removeAll()
 	}
 	
+	@discardableResult
 	public func append(_ item: FormItem) -> FormItem {
 		innerItems.append(item)
 		return item

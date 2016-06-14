@@ -21,17 +21,22 @@ public class ViewControllerFormItem: FormItem {
 	}
 	
 	public var placeholder: String = ""
+
+	@discardableResult
 	public func placeholder(_ placeholder: String) -> Self {
 		self.placeholder = placeholder
 		return self
 	}
 	
 	public var title: String = ""
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
 	}
 	
+	@discardableResult
 	public func viewController(_ aClass: UIViewController.Type) -> Self {
 		createViewController = { (dismissCommand: CommandProtocol) in
 			return aClass.init()
@@ -39,6 +44,7 @@ public class ViewControllerFormItem: FormItem {
 		return self
 	}
 	
+	@discardableResult
 	public func storyboard(_ name: String, bundle storyboardBundleOrNil: Bundle?) -> Self {
 		createViewController = { (dismissCommand: CommandProtocol) in
 			let storyboard: UIStoryboard = UIStoryboard(name: name, bundle: storyboardBundleOrNil)

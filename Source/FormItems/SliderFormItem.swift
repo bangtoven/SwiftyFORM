@@ -33,6 +33,8 @@ public class SliderFormItem: FormItem {
 			self.setValue(newValue, animated: false)
 		}
 	}
+
+	@discardableResult
 	public func value(_ value: Float) -> Self {
 		setValue(value, animated: false)
 		return self

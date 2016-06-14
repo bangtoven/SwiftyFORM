@@ -7,12 +7,16 @@ public class TextViewFormItem: FormItem {
 	}
 	
 	public var placeholder: String = ""
+
+	@discardableResult
 	public func placeholder(_ placeholder: String) -> Self {
 		self.placeholder = placeholder
 		return self
 	}
 	
 	public var title: String = ""
+
+	@discardableResult
 	public func title(_ title: String) -> Self {
 		self.title = title
 		return self
